@@ -95,3 +95,94 @@ The request body must be a JSON object with the following structure:
 
 - Passwords are securely hashed before storage.
 - The returned token is a JWT for authentication in subsequent requests.
+
+---
+
+# User Login Endpoint Documentation
+
+## Endpoint
+
+`POST /users/login`
+
+## Description
+Authenticates a user with email and password. If the credentials are valid, returns a JWT authentication token and user data.
+
+## Request Body
+The request body must be a JSON object with the following structure:
+
+```
+{
+  "email": "string (valid email, required)",
+  "password": "string (min 6 chars, required)"
+}
+```
+
+### Example
+```
+{
+  "email": "john.doe@example.com",
+  "password": "securePassword123"
+}
+```
+
+## Validation Rules
+- `email`: Required, must be a valid email address
+- `password`: Required, minimum 6 characters
+
+## Responses
+
+### Success
+- **Status Code:** `201 Created`
+- **Body:**
+  ```json
+  {
+    "token": "<jwt_token>",
+    "user": {
+      "_id": "<user_id>",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+      },
+      "email": "john.doe@example.com"
+      // ...other user fields
+    }
+  }
+  ```
+
+### Validation Error
+- **Status Code:** `400 Bad Request`
+- **Body:**
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Error message",
+        "param": "field",
+        "location": "body"
+      }
+      // ...more errors
+    ]
+  }
+  ```
+
+### Authentication Error
+- **Status Code:** `401 Unauthorized`
+- **Body:**
+  ```json
+  {
+    "message": "Invalid email or password"
+  }
+  ```
+
+### Other Errors
+- **Status Code:** `500 Internal Server Error`
+- **Body:**
+  ```json
+  {
+    "error": "Error message"
+  }
+  ```
+
+## Notes
+- The returned token is a JWT for authentication in subsequent requests.
+- Passwords are never returned in the response.

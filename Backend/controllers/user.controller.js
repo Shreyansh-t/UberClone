@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { test } = require("node:test");
 const userModel = require("../models/user.model");
 const userService = require("../services/user.service");
@@ -20,8 +21,34 @@ module.exports.registerUser = async (req, res, next)=>{
         password: hashedPassword
     });
 
-    const token = userModel.generateAuthToken;
+    const token = userModel.generateAuthToken();
 
     return res.status(201).json({token, user});
 
+}
+
+module.exports.loginUser = async (req, res, next) => {
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()});
+    }
+
+    const {email, password} = req.body;
+    
+    const user = await userModel.findOne({email}).select('+password');
+
+    if(!user){
+        return res.status(401).json({message: 'Invalid email or password'});
+    }
+
+    const isMatch = await user.comparePassword(password);
+
+    if(!isMatch){
+        return res.status(401).json({message: 'Invalid email or password'});
+    }
+
+    const token = user.generateAuthToken();
+
+    return res.status(201).json({token, user})
 }
