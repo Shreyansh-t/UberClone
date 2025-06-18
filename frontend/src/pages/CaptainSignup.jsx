@@ -13,7 +13,7 @@ const CaptainSignup = () => {
         const submitHandler = (e)=>{
             e.preventDefault();
             setUserData({
-                username: {
+                fullName: {
                     firstName: firstName,
                     lastName: lastName
                 },
@@ -29,7 +29,7 @@ const CaptainSignup = () => {
   return (
       <div className='p-7 h-screen flex flex-col justify-between'>
         <div>
-            <img className='w-16 mb-10' src="https://download.logo.wine/logo/Uber/Uber-Logo.wine.png" alt="" />
+            <img className='w-16 mb-10' src="https://pngimg.com/d/uber_PNG24.png" alt="" />
         <form onSubmit={(e)=>{
             submitHandler(e);
         }}>
@@ -92,7 +92,7 @@ const CaptainSignup = () => {
             <button className='bg-[#111] text-white font-semibold mb-7 rounded px-4 py-2 w-full text-lg placeholder:text-base'>Login</button>
         </form>
 
-        <p className='text-center'>Have an account? <Link to='/login' className='mb-3 text-blue-600'>Login</Link></p>
+        <p className='text-center'>Have an account? <Link to='/captain-login' className='mb-3 text-blue-600'>Login</Link></p>
 
 
         </div>
